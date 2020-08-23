@@ -20,9 +20,11 @@ export function Nav() {
   return (
     <AppBar position="static">
       <Toolbar variant="dense">
-        <Typography variant="h6" className={classes.title}>
-          Car Trader
-        </Typography>
+        <Link href="/">
+          <Typography variant="h6" className={classes.title}>
+            Car Trader
+          </Typography>
+        </Link>
 
         <Button color="inherit">
           <Link href="/">
