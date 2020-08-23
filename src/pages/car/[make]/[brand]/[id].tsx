@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { GetServerSideProps } from 'next';
-import React from 'react';
 import { CarModel } from '../../../../../api/Car';
 import { openDB } from '../../../../openDB';
 import Grid from '@material-ui/core/Grid';
