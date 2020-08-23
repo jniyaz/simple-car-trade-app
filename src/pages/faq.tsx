@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { GetStaticProps } from "next"
 import { openDB } from "../openDB"
 import { FaqModel } from '../../api/Faq';
@@ -13,6 +14,9 @@ interface FaqProps {
 
 export default function Faq({faq}: FaqProps) {
     return <div>
+        <Head>
+            <title>Car Trader - FAQ</title>
+        </Head>
         <div>
             <Typography><h4>FAQ</h4></Typography>
             {faq.map(f => 
