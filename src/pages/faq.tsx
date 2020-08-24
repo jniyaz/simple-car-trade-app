@@ -15,7 +15,7 @@ interface FaqProps {
 export default function Faq({faq}: FaqProps) {
     return <div>
         <Head>
-            <title>Car Trader / FAQ</title>
+            <title>FAQ | Car Trader</title>
         </Head>
         <div>
             <Typography variant="h4">FAQ</Typography>

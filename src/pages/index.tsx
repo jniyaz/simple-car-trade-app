@@ -1,8 +1,9 @@
+import Head from 'next/head'
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import { Field, Form, Formik, useField, useFormikContext } from 'formik';
 import { getMakes, Make } from '../database/getMakes'
-import { Paper, Grid, Select, FormControl, InputLabel, MenuItem, makeStyles, SelectProps } from '@material-ui/core';
+import { Paper, Grid, Select, FormControl, InputLabel, MenuItem, makeStyles, SelectProps, Button } from '@material-ui/core';
 import { Model, getModels } from '../database/getModels';
 import { getAsString } from '../utils/common';
 import useSWR from 'swr';
@@ -32,81 +33,104 @@ export default function Home({makes, models} : HomeProps) {
   };
 
   const prices = [500, 1000, 5000, 15000, 25000, 50000, 100000];
+
+  const handleSubmit = (values) => {
+    // Shallow Routing
+    router.push({
+        pathname: '/',
+        query: { ...values, page: 1 },
+      },
+      undefined,
+      { shallow: true }
+    );
+  }
   
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({values}) => (
-        <Form>
-          <Paper elevation={5} className={classes.paper}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth variant="outlined">
-                    <InputLabel id="search-make">Make</InputLabel>
-                    <Field
-                      name="make"
-                      as={Select}
-                      labelId="search-make"
-                      label="Make"
-                    >
-                      <MenuItem value="all">
-                        <em>All Makes</em>
-                      </MenuItem>
-                      {makes.map((make, index) => (
-                        <MenuItem key={index} value={make.make}>
-                          {`${make.make} (${make.count})`}
+    <div>
+      <Head>
+          <title>Search Cars | Car Trader</title>
+      </Head>
+      <Formik initialValues={initialValues} onSubmit={(values) => {handleSubmit(values)}}>
+        {({values}) => (
+          <Form>
+            <Paper elevation={5} className={classes.paper}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="outlined">
+                      <InputLabel id="search-make">Make</InputLabel>
+                      <Field
+                        name="make"
+                        as={Select}
+                        labelId="search-make"
+                        label="Make"
+                      >
+                        <MenuItem value="all">
+                          <em>All Makes</em>
                         </MenuItem>
-                      ))}
-                    </Field>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <ModelSelect name="model" make={values.make} models={models} />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth variant="outlined">
-                    <InputLabel id="min-price">Min Price</InputLabel>
-                    <Field
-                      name="minprice"
-                      as={Select}
-                      labelId="min-price"
-                      label="Min Price"
-                    >
-                      <MenuItem value="all">
-                        <em>No Min Price</em>
-                      </MenuItem>
-                      {prices.map((price, index) => (
-                        <MenuItem key={index} value={price}>
-                          {price}
+                        {makes.map((make, index) => (
+                          <MenuItem key={index} value={make.make}>
+                            {`${make.make} (${make.count})`}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <ModelSelect name="model" make={values.make} models={models} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="outlined">
+                      <InputLabel id="min-price">Min Price</InputLabel>
+                      <Field
+                        name="minprice"
+                        as={Select}
+                        labelId="min-price"
+                        label="Min Price"
+                      >
+                        <MenuItem value="all">
+                          <em>No Min Price</em>
                         </MenuItem>
-                      ))}
-                    </Field>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth variant="outlined">
-                    <InputLabel id="max-price">Max Price</InputLabel>
-                    <Field
-                      name="maxprice"
-                      as={Select}
-                      labelId="max-price"
-                      label="Max Price"
-                    >
-                      <MenuItem value="all">
-                        <em>No Max Price</em>
-                      </MenuItem>
-                      {prices.map((price, index) => (
-                        <MenuItem key={index} value={price}>
-                          {price}
+                        {prices.map((price, index) => (
+                          <MenuItem key={index} value={price}>
+                            {price}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <FormControl fullWidth variant="outlined">
+                      <InputLabel id="max-price">Max Price</InputLabel>
+                      <Field
+                        name="maxprice"
+                        as={Select}
+                        labelId="max-price"
+                        label="Max Price"
+                      >
+                        <MenuItem value="all">
+                          <em>No Max Price</em>
                         </MenuItem>
-                      ))}
-                    </Field>
-                </FormControl>
+                        {prices.map((price, index) => (
+                          <MenuItem key={index} value={price}>
+                            {price}
+                          </MenuItem>
+                        ))}
+                      </Field>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="primary" fullWidth>
+                    Search Cars
+                  </Button>
+                </Grid>
+
               </Grid>
-            </Grid>
-          </Paper>
-        </Form>
-      )}
-    </Formik>
+            </Paper>
+          </Form>
+        )}
+      </Formik>
+    </div>
   )
 }
 
@@ -131,7 +155,7 @@ export function ModelSelect ({ models, make, ...props }: ModelSelectProps) {
       }
     }
   });
-  
+
   const newModels = data || models;
 
   return <FormControl fullWidth variant="outlined">
