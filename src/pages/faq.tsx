@@ -18,7 +18,7 @@ export default function Faq({faq}: FaqProps) {
             <title>Car Trader / FAQ</title>
         </Head>
         <div>
-            <Typography><h4>FAQ</h4></Typography>
+            <Typography variant="h4">FAQ</Typography>
             {faq.map(f => 
                 <Accordion key={f.id}>
                     <AccordionSummary
