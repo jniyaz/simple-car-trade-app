@@ -16,14 +16,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export interface HomeProps {
+export interface SearchProps {
   makes: Make[];
   models: Model[];
+  singleColumn? :boolean;
 }
 
-export default function Home({makes, models} : HomeProps) {
+export default function Search({makes, models, singleColumn} : SearchProps) {
   const classes = useStyles();
   const { query } = useRouter();
+  const smValue = singleColumn ? 12 : 6;
 
   const initialValues = {
     make: getAsString(query.make) || 'all',
@@ -37,7 +39,7 @@ export default function Home({makes, models} : HomeProps) {
   const handleSubmit = (values) => {
     // Shallow Routing
     router.push({
-        pathname: '/',
+        pathname: '/cars',
         query: { ...values, page: 1 },
       },
       undefined,
@@ -55,7 +57,7 @@ export default function Home({makes, models} : HomeProps) {
           <Form>
             <Paper elevation={5} className={classes.paper}>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={smValue}>
                   <FormControl fullWidth variant="outlined">
                       <InputLabel id="search-make">Make</InputLabel>
                       <Field
@@ -75,10 +77,10 @@ export default function Home({makes, models} : HomeProps) {
                       </Field>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={smValue}>
                   <ModelSelect name="model" make={values.make} models={models} />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={smValue}>
                   <FormControl fullWidth variant="outlined">
                       <InputLabel id="min-price">Min Price</InputLabel>
                       <Field
@@ -98,7 +100,7 @@ export default function Home({makes, models} : HomeProps) {
                       </Field>
                   </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={smValue}>
                   <FormControl fullWidth variant="outlined">
                       <InputLabel id="max-price">Max Price</InputLabel>
                       <Field
