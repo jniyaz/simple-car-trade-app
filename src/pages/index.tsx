@@ -150,6 +150,7 @@ export function ModelSelect ({ models, make, ...props }: ModelSelectProps) {
   });
   
   const { data } = useSWR<Model[]>('/api/models?make=' + make, {
+    dedupingInterval: 60000, // optimize for 60s on earlier requests
     onSuccess: (newValues) => {
       if(!newValues.map(item => item.model).includes(field.value)) {
         // set field.value = all
